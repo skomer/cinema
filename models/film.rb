@@ -2,7 +2,8 @@ require_relative("../db/sql_runner")
 
 class Film
 
-  attr_reader :id, :title, :price
+  attr_accessor :title, :price
+  attr_reader :id
 
   def initialize(options)
     @id = options['id'].to_i
@@ -30,17 +31,23 @@ class Film
     return SqlRunner.run(sql)
   end
 
-
   def self.all
-    pass
-
+    sql = "
+      SELECT * FROM films;
+    "
+    return Film.map_items(sql)
   end
 
-  def self.delete
-    pass
-
+  def self.delete_all
+    sql = "
+      DELETE FROM films;
+    "
+    return SqlRunner.run(sql)
   end
 
-
+  def self.map_items(sql)
+    films = SqlRunner.run(sql)
+    return films.map { |film| Film.new(film) }
+  end
 
 end

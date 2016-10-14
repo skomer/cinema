@@ -3,7 +3,7 @@ require_relative 'models/film.rb'
 require_relative 'models/ticket.rb'
 require 'pry-byebug'
 
-# Ticket.delete()
+Ticket.delete_all()
 
 customer1 = Customer.new({ 'name' => "Ruth", 'funds' => 10.00 })
 customer1.save()
@@ -21,6 +21,8 @@ ticket2 = Ticket.new({ 'customer_id' => customer1.id, 'film_id' => film2.id })
 ticket2.save()
 ticket3 = Ticket.new({ 'customer_id' => customer2.id, 'film_id' => film2.id })
 ticket3.save()
+
+# customer3 = Customer.new({ 'name' => "Fliss", 'funds' => 130.00 })
 
 binding.pry
 nil

@@ -33,16 +33,30 @@ attr_reader :id, :customer_id, :film_id
   end
 
   def self.all
-    pass
-
+    sql = "
+      SELECT * FROM tickets;
+    "
+    return Ticket.map_items(sql)
   end
 
-  def self.delete
-    pass
+  def self.delete_all
+    sql = "
+      DELETE FROM tickets;
+    "
+    return SqlRunner.run(sql)
+  end
 
+  def self.map_items(sql)
+    tickets = SqlRunner.run(sql)
+    return tickets.map { |ticket| Ticket.new(ticket) }
   end
 
 end
+
+
+
+
+
 
 
 
