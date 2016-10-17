@@ -1,15 +1,29 @@
 require_relative 'customer.rb'
 require_relative 'film.rb'
-require_relative("../db/sql_runner")
+require_relative '../db/sql_runner'
+
+require 'pry-byebug'
 
 class Ticket
 
-attr_reader :id, :customer_id, :film_id
+  attr_reader :id, :customer_id, :film_id
 
   def initialize(options)
     @id = options['id'].to_i
     @customer_id = options.fetch('customer_id')
     @film_id = options.fetch('film_id')
+    # binding.pry
+    # check_customer_funds()
+  end
+
+  def check_customer_funds
+    # binding.pry
+    sql = "
+      SELECT funds
+      FROM customers
+      WHERE id = #{@customer_id};
+    "
+    return Ticket.map_items(sql)
   end
 
   def save
@@ -47,8 +61,15 @@ attr_reader :id, :customer_id, :film_id
   end
 
   def self.map_items(sql)
+    # binding.pry
     tickets = SqlRunner.run(sql)
+    # binding.pry
     return tickets.map { |ticket| Ticket.new(ticket) }
+  end
+
+  def self.map_item(sql)
+    result = Ticket.map_items(sql)
+    return result[0]
   end
 
 end
